@@ -50,7 +50,7 @@
                         <div class="p-6">
                             <div class="flex items-center">
                                 <div class="ml-4 text-lg leading-7 font-semibold">
-                                    <a href="{{route('product.main')}}" class="underline text-gray-900 dark:text-white">Product</a></div>
+                                    <a href="{{route('main_product_page')}}" class="underline text-gray-900 dark:text-white">Product</a></div>
                             </div>
 
                         </div>
@@ -59,7 +59,7 @@
                         <div class="p-6 border-t border-gray-200 dark:border-gray-700 md:border-t-0 md:border-l">
                             <div class="flex items-center">
                                 <div class="ml-4 text-lg leading-7 font-semibold">
-                                    <a href="{{route('category.main')}}" class="underline text-gray-900 dark:text-white">Category</a></div>
+                                    <a href="{{route('main_category_page')}}" class="underline text-gray-900 dark:text-white">Category</a></div>
                             </div>
 
                         </div>

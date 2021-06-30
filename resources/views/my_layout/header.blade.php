@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+<!-- Page Header -->
+<nav class="bg-white border-b border-gray-100">
     <div class="container">
         <a class="navbar-brand" href="{{ url('/') }}">
             {{ config('app.name', 'E-Commerce') }}

@@ -7,14 +7,14 @@ use App\Http\Controllers\ProductController;
 
 
 Route::prefix('product')->group(function(){
-    Route::get(  '/'             , [ProductController::class , 'index'])->name('main');
-    Route::get(  '/all'          , [ProductController::class , 'view_all'])->name('all');
-    Route::get(  '/add'          , [ProductController::class , 'create'])->name('add');
-    Route::get(  '/store'        , [ProductController::class , 'store'])->name('store');
-    Route::get(  '/edit/{id}'    , [ProductController::class , 'edit'])->name('edit');
-    Route::get(  '/update/{id}'  , [ProductController::class , 'update'])->name('update');
-    Route::get(  '/delete/{id}'  , [ProductController::class , 'destroy'])->name('delete');
-    Route::get(  '/fake'         , [ProductController::class , 'makeFactory'])->name('fake');
+    Route::get(  '/'              , [ProductController::class , 'index'])->name('main_product_page');
+    Route::get(  '/all'           , [ProductController::class , 'view_all'])->name('product_all');
+    Route::get(  '/add'           , [ProductController::class , 'create'])->name('product_add');
+    Route::post(  '/store'        , [ProductController::class , 'store'])->name('product_store');
+    Route::get(  '/edit/{id}'     , [ProductController::class , 'edit'])->name('product_edit');
+    Route::post(  '/update/{id}'  , [ProductController::class , 'update'])->name('product_update');
+    Route::post(  '/delete/{id}'  , [ProductController::class , 'destroy'])->name('product_delete');
+    Route::get(  '/fake'          , [ProductController::class , 'makeFactory'])->name('product_fake');
 });
 
 
