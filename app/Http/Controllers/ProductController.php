@@ -15,8 +15,9 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function makeFactory(){
-       // Product::factory()->count(10000)->create();
+
+    public function factory($counter){
+        Product::runFactory($counter);
     }
 
     public function index()
@@ -30,9 +31,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function view_all(){
-
         $products = DB::table('products')->paginate(30);
-        //$products = Product::all();
         return view('Product.all')->with(['products' => $products]);
     }
 
@@ -62,32 +61,10 @@ class ProductController extends Controller
             'product_title' => 'required'
         ] , $custom_msg);
 
-
-        $product = new Product();
-        $product->title        = $request->product_title;
-        $product->slug         = str_replace( ' ' , '-' , strtolower( $request->product_title ) );
-        $product->description  = $request->product_desc;
-        $product->status       = 1;
-        $product->save();
-
-        if( $request->hasFile('product_image') ){
-
-            $folder_name         = 'products';
-            $folder_product_slug = $product->slug.'_'.$product->id;
-            $directory           = 'public/upload/'.$folder_name.'/'.$folder_product_slug.'/';
-            Storage::makeDirectory($directory);
-
-            $image_path = $request->file('product_image')->store('upload/'.$folder_name.'/'.$folder_product_slug , 'public');
-            storage_path('app/public/upload/'.$folder_name.'/'.$folder_product_slug.'/').$image_path;
-
-            Product::where(['id' => $product->id])->update([
-                'image' => $image_path
-            ]);
-        }
+        Product::storeProduct($request);
 
         $noti = array("message" => "Product created successfully!");
         return redirect()->route('product_all')->with($noti);
-
     }
 
     /**
@@ -126,19 +103,9 @@ class ProductController extends Controller
             'product_title' => 'required'
         ] , $custom_msg);
 
-        $product_pre_img = $request->product_old_image;
-        $folder_name = 'product';
-        $folder_product_slug = str_replace( ' ' , '-' , strtolower( $request->product_title ) );
-
-        Product::where(['id' => $id])->update([
-            'title' => $request->product_title,
-            'slug' => str_replace( ' ' , '-' , strtolower( $request->product_title ) ),
-            'description' => $request->product_desc,
-            'image' => $request->file('product_image') ?  $request->file('product_image')->store('upload/'.$folder_name.'/'.$folder_product_slug , 'public') : $product_pre_img,
-        ]);
+        Product::updateProduct($request, $id);
 
         return redirect()->back();
-
     }
 
     /**
@@ -148,9 +115,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
-        $product->delete();
-
+        Product::deleteProduct($id);
         return redirect()->back();
     }
 }
