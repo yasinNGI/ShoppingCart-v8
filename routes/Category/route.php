@@ -14,3 +14,4 @@ Route::prefix('category')->group(function(){
     Route::get(  '/update/{id}'  , [CategoryController::class , 'update'])->name('update');
     Route::get(  '/delete/{id}'  , [CategoryController::class , 'destroy'])->name('delete');
 });
+

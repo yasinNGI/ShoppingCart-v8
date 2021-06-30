@@ -17,3 +17,4 @@ Route::prefix('product')->group(function(){
     Route::get(  '/fake'         , [ProductController::class , 'makeFactory'])->name('fake');
 });
 
+
