@@ -14,12 +14,11 @@ class ProductController extends Controller
      */
 
     public function makeFactory(){
-       // $products = factory(Product::class , 10000)->create();
+        Product::factory()->count(10000)->create();
     }
 
     public function index()
     {
-        var_dump('dfdf');
         //return view('');
     }
 
