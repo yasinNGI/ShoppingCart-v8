@@ -19,7 +19,8 @@ class ProductController extends Controller
 
     public function index()
     {
-        //
+        var_dump('dfdf');
+        //return view('');
     }
 
     /**
