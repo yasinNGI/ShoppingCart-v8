@@ -1,23 +1,17 @@
 <!-- Page Header -->
 <nav class="bg-white border-b border-gray-100">
     <div class="container">
-        <a class="navbar-brand" href="{{ url('/') }}">
-            {{ config('app.name', 'E-Commerce') }}
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <!-- Left Side Of Navbar -->
-            <ul class="navbar-nav mr-auto">
-            </ul>
-
-            <!-- Right Side Of Navbar -->
-            <ul class="navbar-nav ml-auto">
-            </ul>
-
+        <div class="row">
+            <div class="col-lg-3 py-1">
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    {{ config('app.name', 'E-Commerce') }}
+                </a>
+            </div>
+            <div class="col-lg-9 py-2 text-right">
+                <a href="#" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150"> Cart <span id="cart_item">(0)</span></a>
+            </div>
         </div>
     </div>
+
 </nav>

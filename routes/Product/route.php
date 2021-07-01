@@ -14,7 +14,6 @@ Route::prefix('product')->group(function () {
     Route::post('/update/{id}', [ProductController::class, 'update'])->name('product_update');
     Route::post('/delete/{id}', [ProductController::class, 'destroy'])->name('product_delete');
     Route::get('/fake/{counter}', [ProductController::class, 'factory'])->name('product_fake');
-    Route::post('/add_to_cart/{id}', [ProductController::class, 'productAddToCart'])->name('product_add_to_cart');
 });
 
 

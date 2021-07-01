@@ -27,6 +27,7 @@ class ProductFactory extends Factory
             'slug'        => str_replace( ' ' , '-' , strtolower( $title ) ),
             'description' => $this->faker->paragraph,
             'image'       => null,
+            'price'       => $this->faker->numberBetween(30,1500),
             'status'      => 1,
         ];
     }

@@ -21,6 +21,7 @@ Route::get('/', function () {
 //
 require __DIR__ .'/Product/route.php';
 require __DIR__ .'/Category/route.php';
+require __DIR__ .'/Cart/route.php';
 
 
 

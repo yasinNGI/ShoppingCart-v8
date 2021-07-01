@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,8 +32,14 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function view_all(){
-        $products = DB::table('products')->paginate(30);
-        return view('Product.all')->with(['products' => $products]);
+        $products      = DB::table('products')->paginate(30);
+        $cart_products = [];
+
+        foreach (Cart::all()  as $key => $val){
+            $cart_products [] = $val->product_id;
+        }
+
+        return view('Product.all')->with(['products' => $products , 'cart_products' => $cart_products]);
     }
 
     /**
