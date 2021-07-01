@@ -118,4 +118,15 @@ class ProductController extends Controller
         Product::deleteProduct($id);
         return redirect()->back();
     }
+
+
+    public function productAddToCart(Request $request,$id){
+
+        $product_io = $id;
+        $status = $request->status;
+
+
+        die;
+    }
+
 }

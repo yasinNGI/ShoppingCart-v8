@@ -37,29 +37,33 @@
                     </tr>
                     </thead>
                     <tbody>
-                        @forelse($products as $key => $val)
-                            <tr>
-                                <th scope="row">{{$val->id}}</th>
-                                <td>
-                                    {{ucwords($val->title)}}
-                                    <span class="d-block">
+                    @forelse($products as $key => $val)
+                        <tr>
+                            <th scope="row">{{$val->id}}</th>
+                            <td>
+                                {{ucwords($val->title)}}
+                                <span class="d-block">
                                         @if( $val->image !== null )
-                                            <img src="{{asset('storage/'.$val->image)}}" alt="" width="100" height="50">
-                                        @else
-                                            <img src="{{asset('others/images/placeholder.png')}}" alt="" width="100" height="50">
-                                        @endif
+                                        <img src="{{asset('storage/'.$val->image)}}" alt="" width="100" height="50">
+                                    @else
+                                        <img src="{{asset('others/images/placeholder.png')}}" alt="" width="100"
+                                             height="50">
+                                    @endif
                                     </span>
-                                </td>
-                                <td>
-                                    <a href="{{route('product_edit' , $val->id)}}" class="btn btn-outline-success">Edit</a>
-                                    <form action="{{route('product_delete',$val->id)}}" method="post" class="d-inline">
-                                        @csrf
-                                        <input type="submit" value="Delete" class="btn btn-outline-danger">
-                                    </form>
-                                </td>
-                            </tr>
-                        @empty
-                        @endforelse
+                            </td>
+                            <td>
+                                <a href="{{route('product_edit' , $val->id)}}" class="btn btn-outline-success btn-sm">Edit</a>
+                                <form action="{{route('product_delete',$val->id)}}" method="post" class="d-inline">
+                                    @csrf
+                                    <input type="submit" value="Delete" class="btn btn-outline-danger btn-sm">
+                                </form>
+                                <button type="button" name="add_to_cart" product_id="{{$val->id}}"
+                                        class="add_to_cart btn btn-outline-primary btn-sm">Add to Cart
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                    @endforelse
                     </tbody>
                 </table>
             </div>
@@ -76,7 +80,25 @@
 
 @section('custom-js')
     <script type="text/javascript">
-        $(document).ready(function(){
+        $(document).ready(function () {
+
+            $('.add_to_cart').click(function () {
+
+                var product_id = $(this).attr('product_id');
+                var route = "{{route('product_add_to_cart', ['id'=>'id'])}}";
+                route = route.replace('id', product_id);
+
+                var status = 'add';
+
+                $.ajax({
+                    url: route,
+                    type: 'post',
+                    data: {status: status},
+                    success: function (res) {
+                        console.log(res);
+                    }
+                });
+            });
 
         });
     </script>
