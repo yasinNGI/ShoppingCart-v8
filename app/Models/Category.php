@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Category extends Model
 {
@@ -62,6 +63,10 @@ class Category extends Model
         ]);
 
         return $res = true;
+    }
+
+    public static function  deleteCategory($id){
+        $category = DB::table('categories')->where(['id' => $id])->delete();
     }
 
 }

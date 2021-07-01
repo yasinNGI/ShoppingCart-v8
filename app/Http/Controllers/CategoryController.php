@@ -120,8 +120,6 @@ class CategoryController extends Controller
         if( $res == true ){
             $noti = array("message" => "Category updated successfully!");
             return redirect()->route('category_all')->with($noti);
-        }else{
-
         }
 
     }
@@ -133,8 +131,7 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $cat = Category::findOrFail($id);
-        $cat->delete();
+        Category::deleteCategory($id);
         return redirect()->back();
     }
 }
