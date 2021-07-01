@@ -13,8 +13,7 @@ class CategoryController extends Controller
     }
 
     public function view_all(){
-
-        $categories = Category::all();
+        $categories = Category::getAll();
         return view('categories.all')->with(['categories' => $categories]);
     }
 
@@ -56,34 +55,15 @@ class CategoryController extends Controller
             'cat_name' => 'required'
         ],$custom_msg);
 
-        $parent_cat      = !empty($request->parent_category) ? $request->parent_category : 'root';
-        $category_detail = Category::where(['name' => $request->cat_name])->where(['parent' => $parent_cat ])->get();
+        $res = Category::storeCategory($request);
 
-
-        if( count($category_detail) == 0 ){
-
-            $category = new Category();
-            $category->name = $request->cat_name;
-            $category->slug = str_replace( " " , "-" , strtolower($request->cat_name) );
-            $category->parent = $parent_cat;
-            $category->status = 1;
-
-            if( !$request->parent_category ){
-                $category->top = intval(1);
-            }else{
-                $category->top = intval(0);
-            }
-            $category->save();
-
+        if( $res == true ){
             $noti = array("message" => "Category created successfully!");
             return redirect()->route('category_all')->with($noti);
-
         }else{
             $noti = array("error" => "Category already exist!");
             return redirect()->back()->with($noti);
         }
-
-
     }
 
     /**
@@ -135,23 +115,15 @@ class CategoryController extends Controller
             'cat_name' => 'required'
         ],$custom_msg);
 
-        $parent_cat = !empty($request->parent_category) ? $request->parent_category : 'root';
+        $res = Category::updateCategory($request , $id);
 
-        $cat_top = '';
-        if( !$request->parent_category ){
-            $cat_top = intval(1);
+        if( $res == true ){
+            $noti = array("message" => "Category updated successfully!");
+            return redirect()->route('category_all')->with($noti);
         }else{
-            $cat_top = intval(0);
+
         }
 
-        Category::where(['id' => $id])->update([
-            'name' => $request->cat_name,
-            'parent' => $parent_cat,
-            'top' => $cat_top,
-        ]);
-
-        $noti = array("message" => "Category updated successfully!");
-        return redirect()->route('category_all')->with($noti);
     }
 
     /**
