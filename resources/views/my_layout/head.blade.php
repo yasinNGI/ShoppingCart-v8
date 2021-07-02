@@ -17,6 +17,19 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
+    <!-- Toastr -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <style>
+        .custom-navbar{
+            position: fixed;
+            width: 100%;
+            z-index: 1;
+            top: 0;
+        }
+    </style>
+
     <!-- Scripts -->
 {{--    <script src="{{ asset('js/app.js') }}" defer></script>--}}
 </head>
+

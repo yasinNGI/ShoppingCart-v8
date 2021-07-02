@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
@@ -34,48 +36,28 @@ class CartController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $id)
-    {
-        if (!empty($request->status) && !empty($id)) {
-            try {
-
-                $qty = !empty($request->quantity) ? $request->quantity : 1;
-
-                $cart = new Cart();
-                $cart->product_id = $id;
-                $cart->quantity = $qty;
-                $cart->price = ($request->price * $qty);
-                $cart->save();
-
-                $count = count(Cart::all());
-
-                return response()->json(['ok' => 'Product added in cart successfully ', 'count' => $count], 200);
-
-            } catch (\Exception $ex) {
-                return response()->json(["message" => $ex->getMessage()], 400);
-            }
-
-        } else {
-            return response()->json(["message" => "Oops! Something went wrong!"], 400);
-        }
+    public function store(Request $request, $id){
+        $res = Cart::addItem($request ,$id);
+        $res->throwResponse();
     }
 
     public function remove(Request $request,$id){
-        if (!empty($request->status) && !empty($id)) {
+        $res = Cart::removeItem($request,$id);
+        $res->throwResponse();
+    }
 
-            try {
 
-                DB::table('carts')->where(['product_id' => $id])->delete();
-                $count = count(Cart::all());
-                return response()->json(['ok' => 'Product removed in cart successfully ', 'count' => $count], 200);
+    public function cart_items(){
 
-            } catch (\Exception $ex) {
-                return response()->json(["message" => $ex->getMessage()], 400);
-            }
+        $get_cookie_date = Cookie::get('cart');
+        $data            = json_decode($get_cookie_date);
+        $products        = [];
 
-        } else {
-            return response()->json(["message" => "Oops! Something went wrong!"], 400);
+        foreach ($data as $key => $val ){
+            $products [] = Product::find( $val->product_id );
         }
+
+        return view('Cart.all')->with(['products' => $products , 'data' => $data]);
     }
 
     /**

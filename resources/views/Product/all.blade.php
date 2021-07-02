@@ -146,10 +146,10 @@
                         _self.hide();
                         _self.parent().parent().find('.remove_cart_div_2').append(remove_item_btn);
                         cart_attr.attr('disabled','disabled');
+                        cart_attr.val('');
                     }
                 });
             });
-
 
             $('body').on('click' ,'.remove_from_cart' , function () {
                 var _self           = $(this);
@@ -163,7 +163,7 @@
                 $.ajax({
                     url: route,
                     type: 'post',
-                    data: {status: status},
+                    data: {status: status , form:"ajax"},
                     success: function (res) {
                         cart_element.text( '('+res.count+')' );
                         _self.hide();

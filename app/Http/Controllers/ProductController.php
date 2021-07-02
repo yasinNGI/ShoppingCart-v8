@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cookie;
 
 class ProductController extends Controller
 {
@@ -33,11 +34,18 @@ class ProductController extends Controller
      */
     public function view_all(){
         $products      = DB::table('products')->paginate(30);
+        $cookie_data   = Cookie::get('cart');
         $cart_products = [];
 
-        foreach (Cart::all()  as $key => $val){
-            $cart_products [] = $val->product_id;
+        if(isset($cookie_data)){
+            foreach (json_decode($cookie_data) as $key => $val ){
+                $cart_products [] = $val->product_id;
+            }
         }
+
+//        foreach (Cart::all()  as $key => $val){
+//            $cart_products [] = $val->product_id;
+//        }
 
         return view('Product.all')->with(['products' => $products , 'cart_products' => $cart_products]);
     }
@@ -70,8 +78,7 @@ class ProductController extends Controller
 
         Product::storeProduct($request);
 
-        $noti = array("message" => "Product created successfully!");
-        return redirect()->route('product_all')->with($noti);
+        return redirect()->route('product_all')->with(toastr("Product created successfully!" , "success"));
     }
 
     /**
@@ -112,7 +119,7 @@ class ProductController extends Controller
 
         Product::updateProduct($request, $id);
 
-        return redirect()->back();
+        return redirect()->back()->with(toastr("Product updated successfully!" , "success"));
     }
 
     /**
@@ -123,17 +130,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         Product::deleteProduct($id);
-        return redirect()->back();
-    }
-
-
-    public function productAddToCart(Request $request,$id){
-
-        $product_io = $id;
-        $status = $request->status;
-
-
-        die;
+        return redirect()->back()->with(toastr("Product deleted successfully" , "success"));
     }
 
 }

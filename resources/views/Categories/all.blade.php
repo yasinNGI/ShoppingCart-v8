@@ -16,14 +16,6 @@
 
         @include('Categories.Category-Component.header_with_buttons')
 
-        <div class="row">
-            <div class="col-lg-12 mt-4 text-center">
-                @if(Session::has('message'))
-                    <x-alert type="success" message="{{ Session::get('message')}}" />
-                @endif
-            </div>
-        </div>
-
         <div class="row mt-5">
 
             <table class="table table-striped">
