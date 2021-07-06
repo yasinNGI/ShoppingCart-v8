@@ -34,6 +34,7 @@ class ProductController extends Controller
                 "content" => "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English"
             ]
         ];
+
         return view('Product.main' )->with(['posts' => $posts]);
     }
 
@@ -46,6 +47,7 @@ class ProductController extends Controller
         $products      = DB::table('products')->paginate(30);
         $cookie_data   = Cookie::get('cart');
         $cart_products = [];
+        $table_cols    = ['Product','Price','Quantity','Action'];
 
         if(isset($cookie_data)){
             foreach (json_decode($cookie_data) as $key => $val ){
@@ -53,11 +55,16 @@ class ProductController extends Controller
             }
         }
 
+
 //        foreach (Cart::all()  as $key => $val){
 //            $cart_products [] = $val->product_id;
 //        }
 
-        return view('Product.all')->with(['products' => $products , 'cart_products' => $cart_products]);
+        return view('Product.all')->with([
+            'products'       => $products ,
+            'cart_products'  => $cart_products,
+            'table_cols'     => $table_cols
+        ]);
     }
 
     /**
