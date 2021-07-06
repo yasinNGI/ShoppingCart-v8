@@ -61,5 +61,13 @@ class Product extends Model
         return DB::table('products')->where(['id' => $id])->delete();
     }
 
+    public static function deleteProducts($limit){
+        DB::table('products')->orderBy(rand(2,3000))->take($limit)->delete();
+    }
+
+    public static function truncateProductsTable(){
+        DB::table('products')->truncate();
+    }
+
 }
 

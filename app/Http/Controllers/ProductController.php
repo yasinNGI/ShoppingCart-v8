@@ -137,10 +137,41 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function destroyRecord($limit){
+        Product::deleteProducts($limit);
+
+        $products      = DB::table('products')->paginate(30);
+        $cookie_data   = Cookie::get('cart');
+        $cart_products = [];
+
+        if(isset($cookie_data)){
+            foreach (json_decode($cookie_data) as $key => $val ){
+                $cart_products [] = $val->product_id;
+            }
+        }
+
+        return view('Product.all')->with(['products' => $products , 'cart_products' => $cart_products]);
+    }
+
     public function destroy($id)
     {
         Product::deleteProduct($id);
         return redirect()->back()->with(toastr("Product deleted successfully" , "success"));
+    }
+
+    public function truncate(){
+        Product::truncateProductsTable();
+        $products      = DB::table('products')->paginate(30);
+        $cookie_data   = Cookie::get('cart');
+        $cart_products = [];
+
+        if(isset($cookie_data)){
+            foreach (json_decode($cookie_data) as $key => $val ){
+                $cart_products [] = $val->product_id;
+            }
+        }
+
+        return view('Product.all')->with(['products' => $products , 'cart_products' => $cart_products]);
     }
 
 }
