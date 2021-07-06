@@ -13,12 +13,14 @@ class Alert extends Component
      */
     public $type;
     public $message;
+    public $alert;
 
 
-    public function __construct( $type , $message )
+    public function __construct( $alert , $type , $message )
     {
         $this->type = $type;
         $this->message = $message;
+        $this->alert = $alert;
     }
 
     /**

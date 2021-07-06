@@ -58,11 +58,11 @@ class CategoryController extends Controller
         $res = Category::storeCategory($request);
 
         if( $res == true ){
-            $noti = array("message" => "Category created successfully!");
-            return redirect()->route('category_all')->with($noti);
+            return redirect()->route('category_all')
+                ->with(toastr("Category created successfully!" , "success"));
         }else{
-            $noti = array("error" => "Category already exist!");
-            return redirect()->back()->with($noti);
+            return redirect()->back()
+                ->with(toastr("Category already exist!" , "error"));
         }
     }
 
@@ -118,10 +118,9 @@ class CategoryController extends Controller
         $res = Category::updateCategory($request , $id);
 
         if( $res == true ){
-            $noti = array("message" => "Category updated successfully!");
-            return redirect()->route('category_all')->with($noti);
+            return redirect()->route('category_all')
+                ->with(toastr("Category updated successfully!" , "success"));
         }
-
     }
 
     /**
@@ -132,6 +131,6 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         Category::deleteCategory($id);
-        return redirect()->back();
+        return redirect()->back()->with(toastr("Category deleted successfully!" , "success"));
     }
 }

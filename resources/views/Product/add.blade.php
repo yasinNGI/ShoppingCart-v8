@@ -11,11 +11,11 @@
 
         <div class="row my-3">
             <div class="col-lg-12 text-center">
-                <h1 style="font-size: 30px;">Add Product</h1>
+                <h1  class="my-3" style="font-size: 30px;">Add Product</h1>
             </div>
         </div>
 
-        @include('Product.Product-Components.header_with_buttons')
+        <x-main-page-buttons btnTextOne="Add Product" btnUrlOne="{{route('product_add')}}" btnTextTwo="View All" btnUrlTwo="{{route('product_all')}}"  />
 
         <div class="row mt-5">
 

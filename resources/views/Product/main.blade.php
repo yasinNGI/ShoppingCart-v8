@@ -7,17 +7,16 @@
 
 
 @section('content')
-    <div class="container">
+    <div class="container mt-5">
 
-        <div class="row my-3">
+        <div class="row">
             <div class="col-lg-12 text-center">
-                <h1 style="font-size: 30px;">Product Section</h1>
+                <h1 class="my-3" style="font-size: 30px;">Product Section</h1>
             </div>
         </div>
 
-        @include('Product.Product-Components.header_with_buttons')
-
-        </div>
+        <x-main-page-buttons btnTextOne="Add Product" btnUrlOne="{{route('product_add')}}" btnTextTwo="View All" btnUrlTwo="{{route('product_all')}}"  />
+        {{-- <x-alert message="Hello" type="primary" :alert="$posts" />--}}
     </div>
 @endsection
 

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cookie;
 
 class ProductController extends Controller
 {
@@ -22,7 +24,17 @@ class ProductController extends Controller
 
     public function index()
     {
-        return view('Product.main');
+        $posts = [
+            [
+                "title" => "What is Lorem Ipsum?",
+                "content" => "orem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book"
+            ],
+            [
+                "title" => "Why do we use it?",
+                "content" => "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English"
+            ]
+        ];
+        return view('Product.main' )->with(['posts' => $posts]);
     }
 
     /**
@@ -31,8 +43,21 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function view_all(){
-        $products = DB::table('products')->paginate(30);
-        return view('Product.all')->with(['products' => $products]);
+        $products      = DB::table('products')->paginate(30);
+        $cookie_data   = Cookie::get('cart');
+        $cart_products = [];
+
+        if(isset($cookie_data)){
+            foreach (json_decode($cookie_data) as $key => $val ){
+                $cart_products [] = $val->product_id;
+            }
+        }
+
+//        foreach (Cart::all()  as $key => $val){
+//            $cart_products [] = $val->product_id;
+//        }
+
+        return view('Product.all')->with(['products' => $products , 'cart_products' => $cart_products]);
     }
 
     /**
@@ -63,8 +88,7 @@ class ProductController extends Controller
 
         Product::storeProduct($request);
 
-        $noti = array("message" => "Product created successfully!");
-        return redirect()->route('product_all')->with($noti);
+        return redirect()->route('product_all')->with(toastr("Product created successfully!" , "success"));
     }
 
     /**
@@ -105,7 +129,7 @@ class ProductController extends Controller
 
         Product::updateProduct($request, $id);
 
-        return redirect()->back();
+        return redirect()->back()->with(toastr("Product updated successfully!" , "success"));
     }
 
     /**
@@ -116,6 +140,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         Product::deleteProduct($id);
-        return redirect()->back();
+        return redirect()->back()->with(toastr("Product deleted successfully" , "success"));
     }
+
 }

@@ -61,6 +61,5 @@ class Product extends Model
         return DB::table('products')->where(['id' => $id])->delete();
     }
 
-
 }
 
