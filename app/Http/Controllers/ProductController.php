@@ -86,11 +86,13 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $custom_msg = [
-            'product_title.required' => 'Product Name is Required!'
+            'product_title.required' => 'Product Name is Required!',
+            'product_price.required' => 'Product Price is Required!'
         ];
 
         $this->validate($request,[
-            'product_title' => 'required'
+            'product_title' => 'required',
+            'product_price' => 'required|numeric'
         ] , $custom_msg);
 
         Product::storeProduct($request);
@@ -127,11 +129,13 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $custom_msg = [
-            'product_title.required' => 'Product Name is Required!'
+            'product_title.required' => 'Product Name is Required!',
+            'product_price.required' => 'Product Price is Required!'
         ];
 
-        $request->validate([
-            'product_title' => 'required'
+        $this->validate($request,[
+            'product_title' => 'required',
+            'product_price' => 'required|numeric'
         ] , $custom_msg);
 
         Product::updateProduct($request, $id);

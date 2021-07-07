@@ -24,7 +24,7 @@
                 <form action="{{route('product_update' , $product->id)}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="">Product Name:</label>
+                        <label for="">Name:</label>
                         <input type="text" name="product_title" value="{{$product->title}}" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('product_title') is-invalid @enderror">
 
                         @error('product_title')
@@ -32,8 +32,16 @@
                                <strong>{{ $message }}</strong>
                             </span>
                         @enderror
+                    </div>
 
-
+                    <div class="form-group">
+                        <label for="">Price:</label>
+                        <input type="text" name="product_price" value="{{$product->price}}" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('product_price') is-invalid @enderror">
+                        @error('product_price')
+                        <span class="invalid-feedback d-block" role="alert">
+                               <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
 
                     <div class="form-group">

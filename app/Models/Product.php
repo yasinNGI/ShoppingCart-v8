@@ -24,6 +24,7 @@ class Product extends Model
         $product->title        = $request->product_title;
         $product->slug         = str_replace( ' ' , '-' , strtolower( $request->product_title ) );
         $product->description  = $request->product_desc;
+        $product->price        = $request->product_price;
         $product->status       = 1;
         $product->save();
 
@@ -53,6 +54,7 @@ class Product extends Model
             'title'       => $request->product_title,
             'slug'        => str_replace( ' ' , '-' , strtolower( $request->product_title ) ),
             'description' => $request->product_desc,
+            'price'       => $request->product_price,
             'image'       => $request->file('product_image') ?  $request->file('product_image')->store('upload/'.$folder_name.'/'.$folder_product_slug , 'public') : $product_pre_img,
         ]);
     }
