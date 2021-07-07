@@ -13,8 +13,14 @@ class CategoryController extends Controller
     }
 
     public function view_all(){
-        $categories = Category::getAll();
-        return view('categories.all')->with(['categories' => $categories]);
+
+        try{
+            $categories = Category::getAll();
+            return view('categories.all')->with(['categories' => $categories]);
+        }catch(\Exception $ex){
+            custom_varDumpDie($ex->getMessage());
+            return view('categories.all')->with(['categories' => [] , 'exception_error' => "Exception : " . $ex->getMessage()]);
+        }
     }
 
     /**
@@ -47,23 +53,30 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $custom_msg = [
-            'cat_name.required' => 'Category name is required!'
-        ];
+        try{
 
-        $this->validate($request,[
-            'cat_name' => 'required'
-        ],$custom_msg);
+            $custom_msg = [
+                'cat_name.required' => 'Category name is required!'
+            ];
 
-        $res = Category::storeCategory($request);
+            $this->validate($request,[
+                'cat_name' => 'required'
+            ],$custom_msg);
 
-        if( $res == true ){
-            return redirect()->route('category_all')
-                ->with(toastr("Category created successfully!" , "success"));
-        }else{
-            return redirect()->back()
-                ->with(toastr("Category already exist!" , "error"));
+            $res = Category::storeCategory($request);
+
+            if( $res == true ){
+                return redirect()->route('category_all')
+                    ->with(toastr("Category created successfully!" , "success"));
+            }else{
+                return redirect()->back()
+                    ->with(toastr("Category already exist!" , "error"));
+            }
+
+        }catch (\Exception $ex){
+            return redirect()->back()->with(['exception_error' => "Exception : " . $ex->getMessage()]);
         }
+
     }
 
     /**
@@ -83,20 +96,27 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category       = Category::find($id);
-        $categories     = Category::all();
-        $getCategoryTop = Category::where('status' , 1)->where('top', 1)->get();
-        $getCategoryAll = Category::where('status' , 1 )
-            ->orderby('id','asc')
-            ->get()
-            ->groupBy('parent');
+        try{
 
-        return view('categories.edit')->with([
-            'category'       => $category,
-            'categories'     => $categories,
-            'getCategoryTop' => $getCategoryTop,
-            'getCategoryAll' => $getCategoryAll
-        ]);
+            $category       = Category::find($id);
+            $categories     = Category::all();
+            $getCategoryTop = Category::where('status' , 1)->where('top', 1)->get();
+            $getCategoryAll = Category::where('status' , 1 )
+                ->orderby('id','asc')
+                ->get()
+                ->groupBy('parent');
+
+            return view('categories.edit')->with([
+                'category'       => $category,
+                'categories'     => $categories,
+                'getCategoryTop' => $getCategoryTop,
+                'getCategoryAll' => $getCategoryAll
+            ]);
+
+        }catch (\Exception $ex){
+            return redirect()->back()->with(['exception_error' => "Exception : " . $ex->getMessage()]);
+        }
+
     }
     /**
      * Update the specified resource in storage.
@@ -106,20 +126,25 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        try{
 
-        $custom_msg = [
-            'cat_name.required' => 'Category name is required!'
-        ];
+            $custom_msg = [
+                'cat_name.required' => 'Category name is required!'
+            ];
 
-        $this->validate($request,[
-            'cat_name' => 'required'
-        ],$custom_msg);
+            $this->validate($request,[
+                'cat_name' => 'required'
+            ],$custom_msg);
 
-        $res = Category::updateCategory($request , $id);
+            $res = Category::updateCategory($request , $id);
 
-        if( $res == true ){
-            return redirect()->route('category_all')
-                ->with(toastr("Category updated successfully!" , "success"));
+            if( $res == true ){
+                return redirect()->route('category_all')
+                    ->with(toastr("Category updated successfully!" , "success"));
+            }
+
+        }catch (\Exception $ex){
+            return redirect()->back()->with(['exception_error' => "Exception : " . $ex->getMessage()]);
         }
     }
 
@@ -130,7 +155,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        Category::deleteCategory($id);
-        return redirect()->back()->with(toastr("Category deleted successfully!" , "success"));
+        try{
+            Category::deleteCategory($id);
+            return redirect()->back()->with(toastr("Category deleted successfully!" , "success"));
+        }catch (\Exception $ex){
+            return redirect()->back()->with(['exception_error' => "Exception : " . $ex->getMessage()]);
+        }
     }
 }

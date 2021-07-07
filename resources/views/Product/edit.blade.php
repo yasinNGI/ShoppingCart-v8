@@ -18,6 +18,10 @@
 
         <x-main-page-buttons btnTextOne="Add Product" btnUrlOne="{{route('product_add')}}" btnTextTwo="View All" btnUrlTwo="{{route('product_all')}}"  />
 
+        @if (session('exception_error'))
+            <div class="alert alert-danger my-5">{{ session('exception_error') }}</div>
+        @endif
+
         <div class="row mt-5">
 
             <div class="col-md-6">

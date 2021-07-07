@@ -10,10 +10,10 @@ class Category extends Model
 {
     use HasFactory;
     protected $table = 'categories';
-    protected $fillable = ['name' , 'parent' , 'top' ,'status'];
+    protected $fillable = ['name' , 'parent','slug', 'top' ,'status'];
 
     public static function getAll(){
-        $categories = Category::all();
+        $categories = self::all();
         return $categories;
     }
 
@@ -25,11 +25,12 @@ class Category extends Model
 
         if( count($category_detail) == 0 ){
 
-            $category = new Category();
-            $category->name = $request->cat_name;
-            $category->slug = str_replace( " " , "-" , strtolower($request->cat_name) );
-            $category->parent = $parent_cat;
-            $category->status = 1;
+            $category = self::create([
+                'name'      => $request->cat_name,
+                'slug'      => str_replace( " " , "-" , strtolower($request->cat_name) ),
+                'parent'    => $parent_cat,
+                'status'    => 1,
+            ]);
 
             if( !$request->parent_category ){
                 $category->top = intval(1);
@@ -56,7 +57,7 @@ class Category extends Model
             $cat_top = intval(0);
         }
 
-        Category::where(['id' => $id])->update([
+        self::where(['id' => $id])->update([
             'name' => $request->cat_name,
             'parent' => $parent_cat,
             'top' => $cat_top,
@@ -66,7 +67,7 @@ class Category extends Model
     }
 
     public static function  deleteCategory($id){
-        $category = DB::table('categories')->where(['id' => $id])->delete();
+        $category = self::where(['id' => $id])->delete();
     }
 
 }

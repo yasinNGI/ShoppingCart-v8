@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cookie;
+use mysql_xdevapi\Exception;
 
 class ProductController extends Controller
 {
@@ -44,27 +46,32 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function view_all(){
-        $products      = DB::table('products')->paginate(30);
-        $cookie_data   = Cookie::get('cart');
-        $cart_products = [];
-        $table_cols    = ['Product','Price','Quantity','Action'];
 
-        if(isset($cookie_data)){
-            foreach (json_decode($cookie_data) as $key => $val ){
-                $cart_products [] = $val->product_id;
+        try{
+
+            $products      = Product::paginate(30);
+            $cookie_data   = Cookie::get('cart');
+            $cart_products = [];
+            $table_cols    = ['Product','Price','Quantity','Action'];
+
+            if(isset($cookie_data)){
+                foreach (json_decode($cookie_data) as $key => $val ){
+                    $cart_products [] = $val->product_id;
+                }
             }
+
+            return view('Product.all')->with([
+                'products'       => $products ,
+                'cart_products'  => $cart_products,
+                'table_cols'     => $table_cols
+            ]);
+
+        }catch (\Exception $ex) {
+            return view('Product.all')->with([
+                'exception_error' => $ex->getMessage()
+            ]);
         }
 
-
-//        foreach (Cart::all()  as $key => $val){
-//            $cart_products [] = $val->product_id;
-//        }
-
-        return view('Product.all')->with([
-            'products'       => $products ,
-            'cart_products'  => $cart_products,
-            'table_cols'     => $table_cols
-        ]);
     }
 
     /**
@@ -85,19 +92,27 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        $custom_msg = [
-            'product_title.required' => 'Product Name is Required!',
-            'product_price.required' => 'Product Price is Required!'
-        ];
+        try{
 
-        $this->validate($request,[
-            'product_title' => 'required',
-            'product_price' => 'required|numeric'
-        ] , $custom_msg);
+            $custom_msg = [
+                'product_title.required' => 'Product Name is Required!',
+                'product_price.required' => 'Product Price is Required!'
+            ];
 
-        Product::storeProduct($request);
+            $this->validate($request,[
+                'product_title' => 'required',
+                'product_price' => 'required'
+            ] , $custom_msg);
 
-        return redirect()->route('product_all')->with(toastr("Product created successfully!" , "success"));
+            Product::storeProduct($request);
+
+            return redirect()->route('product_all')->with(toastr("Product created successfully!" , "success"));
+
+        }catch (\Throwable $ex){
+            \Sentry\captureException($ex);
+            return redirect()->back()->with(['exception_error' => "Exception : " . $ex->getMessage()]);
+        }
+
     }
 
     /**
@@ -117,8 +132,12 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = Product::find($id);
-        return view('Product.edit')->with(['product' => $product]);
+        try{
+            $product = Product::find($id);
+            return view('Product.edit')->with(['product' => $product]);
+        }catch (\Exception $ex){
+            return redirect()->back()->with(['exception_error' => "Exception : " . $ex->getMessage()]);
+        }
     }
     /**
      * Update the specified resource in storage.
@@ -128,19 +147,25 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $custom_msg = [
-            'product_title.required' => 'Product Name is Required!',
-            'product_price.required' => 'Product Price is Required!'
-        ];
+        try{
 
-        $this->validate($request,[
-            'product_title' => 'required',
-            'product_price' => 'required|numeric'
-        ] , $custom_msg);
+            $custom_msg = [
+                'product_title.required' => 'Product Name is Required!',
+                'product_price.required' => 'Product Price is Required!'
+            ];
 
-        Product::updateProduct($request, $id);
+            $this->validate($request,[
+                'product_title' => 'required',
+                'product_price' => 'required|numeric'
+            ] , $custom_msg);
 
-        return redirect()->back()->with(toastr("Product updated successfully!" , "success"));
+            $err = Product::updateProduct($request, $id);
+
+            return redirect()->back()->with(toastr("Product updated successfully!" , "success"));
+
+        }catch (\Exception $ex){
+            return back()->with(['exception_error' => "Exception : " . $ex->getMessage()]);
+        }
     }
 
     /**
@@ -148,10 +173,26 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function destroy($id)
+    {
+        try{
+            Product::deleteProduct($id);
+            return redirect()->back()->with(toastr("Product deleted successfully" , "success"));
+        }catch (\Exception $ex){
+            return back()->with(['exception_error' => "Exception : " . $ex->getMessage()]);
+        }
+    }
+
+    /**
+     * Remove the specified resources from storage.
+     *
+     * @param $limit - how much want to delete the records.
+     * @return \Illuminate\Http\Response
+     */
     public function destroyRecord($limit){
         Product::deleteProducts($limit);
 
-        $products      = DB::table('products')->paginate(30);
+        $products      = Product::paginate(30);
         $cookie_data   = Cookie::get('cart');
         $cart_products = [];
 
@@ -164,15 +205,16 @@ class ProductController extends Controller
         return view('Product.all')->with(['products' => $products , 'cart_products' => $cart_products]);
     }
 
-    public function destroy($id)
-    {
-        Product::deleteProduct($id);
-        return redirect()->back()->with(toastr("Product deleted successfully" , "success"));
-    }
-
+    /**
+     * Truncate product table.
+     * Usage route -> product/truncate
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function truncate(){
         Product::truncateProductsTable();
-        $products      = DB::table('products')->paginate(30);
+
+        $products      = Product::paginate(30);
         $cookie_data   = Cookie::get('cart');
         $cart_products = [];
 

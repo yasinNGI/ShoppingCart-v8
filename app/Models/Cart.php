@@ -19,46 +19,42 @@ class Cart extends Model
     {
 
         if (!empty($request->status) && !empty($id)) {
-            try {
-                $qty    = !empty($request->quantity) ? $request->quantity : 1;
-                $count  = '';
+            $qty    = !empty($request->quantity) ? $request->quantity : 1;
+            $count  = '';
 
-                //DB - Approach =========================================================
-                //$cart = new Cart();
-                //$cart->product_id = $id;
-                //$cart->quantity = $qty;
-                //$cart->price = ($request->price * $qty);
-                //$cart->save();
-                //$count = count(Cart::all());
+            //DB - Approach =========================================================
+            //$cart = new Cart();
+            //$cart->product_id = $id;
+            //$cart->quantity = $qty;
+            //$cart->price = ($request->price * $qty);
+            //$cart->save();
+            //$count = count(Cart::all());
 
 
-                //Cookies - Approach =========================================================
-                $get_cookie_cart_data = Cookie::get('cart');
-                $time                 = time() + (86400 * 30);
+            //Cookies - Approach =========================================================
+            $get_cookie_cart_data = Cookie::get('cart');
+            $time                 = time() + (86400 * 30);
 
-                $cartItems = [];
-                $items = [
-                    'product_id' => $id,
-                    'quantity' => $qty,
-                    'price' => $request->price * $qty,
-                ];
+            $cartItems = [];
+            $items = [
+                'product_id' => $id,
+                'quantity' => $qty,
+                'price' => $request->price * $qty,
+            ];
 
-                if(isset($get_cookie_cart_data)){
-                    $arr = json_decode($get_cookie_cart_data);
-                    array_push( $arr , $items );
-                    $count = count($arr);
-                    Cookie::queue('cart',  json_encode($arr) , $time);
-                }else{
-                    array_push($cartItems , $items);
-                    $count = count($cartItems);
-                    Cookie::queue('cart',  json_encode($cartItems) , $time);
-                }
-
-                return response()->json(['ok' => 'Product added in cart successfully ', 'count' => $count], 200);
-
-            } catch (\Exception $ex) {
-                return response()->json(["message" => $ex->getMessage()], 400);
+            if(isset($get_cookie_cart_data)){
+                $arr = json_decode($get_cookie_cart_data);
+                array_push( $arr , $items );
+                $count = count($arr);
+                Cookie::queue('cart',  json_encode($arr) , $time);
+            }else{
+                array_push($cartItems , $items);
+                $count = count($cartItems);
+                Cookie::queue('cart',  json_encode($cartItems) , $time);
             }
+
+            return response()->json(['ok' => 'Product added in cart successfully ', 'count' => $count], 200);
+
         } else {
             return response()->json(["message" => "Oops! Something went wrong!"], 400);
         }

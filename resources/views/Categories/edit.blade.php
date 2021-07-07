@@ -10,12 +10,15 @@
     <div class="container">
         <div class="row my-3">
             <div class="col-lg-12 text-center">
-                <h1 style="font-size: 30px;">Edit Category</h1>
+                <h1  class="my-3" style="font-size: 30px;">Edit Category</h1>
             </div>
         </div>
 
         @include('Categories.Category-Component.header_with_buttons')
 
+        @if (session('exception_error'))
+            <div class="alert alert-danger my-5">{{ session('exception_error') }}</div>
+        @endif
 
         <div class="row">
             <div class="col-lg-12 mt-4 text-center">

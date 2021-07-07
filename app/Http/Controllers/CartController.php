@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Sentry\Response;
 
 class CartController extends Controller
 {
@@ -37,27 +38,41 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $id){
-        $res = Cart::addItem($request ,$id);
-        $res->throwResponse();
+
+        try{
+            $res = Cart::addItem($request ,$id);
+            $res->throwResponse();
+            die;
+        }catch (\Exception $ex){
+            return response()->json([
+                'success' => 'false',
+                'errors'  => $ex->getMessage(),
+            ], 400);
+        }
+
     }
 
     public function remove(Request $request,$id){
-        $res = Cart::removeItem($request,$id);
+        $res = Cart::removeIteml($request,$id);
         $res->throwResponse();
     }
 
 
     public function cart_items(){
 
-        $get_cookie_date = Cookie::get('cart');
-        $data            = json_decode($get_cookie_date);
-        $products        = [];
+       try{
+           $get_cookie_date = Cookie::get('cart');
+           $data            = json_decode($get_cookie_date);
+           $products        = [];
 
-        foreach ($data as $key => $val ){
-            $products [] = Product::find( $val->product_id );
-        }
+           foreach ($data as $key => $val ){
+               $products [] = Product::find( $val->product_id );
+           }
+           return view('Cart.all')->with(['products' => $products , 'data' => $data]);
 
-        return view('Cart.all')->with(['products' => $products , 'data' => $data]);
+       }catch (\Exception $ex){
+            custom_varDumpDie($ex->getMessage());
+       }
     }
 
     /**
