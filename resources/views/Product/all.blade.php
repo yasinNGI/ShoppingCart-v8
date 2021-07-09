@@ -1,4 +1,4 @@
-@extends('my_layout.app')
+ @extends('my_layout.app')
 
 
 @section('custom-css')
@@ -26,7 +26,15 @@
 
         <div class="row my-3">
             <div class="col-lg-12 text-center">
-                <h1 class="my-3" style="font-size: 30px;">All Product</h1>
+                <?php
+
+                ?>
+                <h1 class="my-3" style="font-size: 30px;">All Product
+
+                    @php
+                      //  custom_varDumpDie($cartData);
+                    @endphp
+                </h1>
             </div>
         </div>
 
@@ -47,8 +55,12 @@
         <div class="row my-5">
 
             <div class="col-lg-12">
-                <x-custom-data-tables :cols="$table_cols" :products="$products" :other_data="$cart_products"
-                                      page="all_product"/>
+                <?php
+                    //custom_varDump($cart_products);
+                    //custom_varDump($cart_products);
+                ?>
+
+                <x-custom-data-tables :cols="$table_cols" :cart="$cart_products" :products="$products" page="all_products"/>
             </div>
 
             <div class="col-md-12 text-center">
@@ -88,12 +100,12 @@
                         _self.parent().parent().find('.remove_cart_div_2').append(remove_item_btn);
                         cart_attr.attr('disabled', 'disabled');
                         cart_attr.val('');
-                    },
-                    error: function(data){
-                        var error = data.responseJSON;
-                        err_msg = "Exception : " + error.errors.toString();
-                        alert(err_msg);
                     }
+                    // error: function(data){
+                    //     var error = data.responseJSON;
+                    //     err_msg = "Exception : " + error.errors.toString();
+                    //     alert(err_msg);
+                    // }
                 });
             });
 

@@ -5,7 +5,7 @@ use App\Http\Controllers\ProductController;
 
 Route::prefix('product')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('main_product_page');
-    Route::get('/all', [ProductController::class, 'view_all'])->name('product_all');
+    Route::get('/all', [ProductController::class, 'viewAll'])->name('product_all');
     Route::get('/add', [ProductController::class, 'create'])->name('product_add');
     Route::post('/store', [ProductController::class, 'store'])->name('product_store');
     Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product_edit');

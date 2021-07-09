@@ -10,7 +10,6 @@
     </thead>
     <tbody>
         <?php
-//            custom_varDumpDie($other_data);
         ?>
 
         @forelse($products as $key => $val)
@@ -42,7 +41,7 @@
                         <input type="submit" value="Delete" class="btn btn-outline-danger btn-sm">
                     </form>
 
-                    @if(!in_array($val->id,$other_data))
+                    @if(!in_array($val->id,$cart))
                         <div class="add_cart_div_1">
                             <button type="button" name="add_to_cart" product_id="{{$val->id}}"
                                     class="mt-1 add_to_cart btn btn-outline-primary btn-sm">Add to Cart
@@ -50,8 +49,7 @@
                         </div>
                     @endif
                     <div class="add_cart_div_2"></div>
-
-                    @if(in_array($val->id,$other_data))
+                    @if(in_array($val->id,$cart))
                         <div class="remove_cart_div_1">
                             <button type="button" name="remove_from_cart" product_id="{{$val->id}}"
                                     class="mt-1 remove_from_cart btn btn-outline-warning btn-sm">Remove Item

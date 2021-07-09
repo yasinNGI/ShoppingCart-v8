@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Cookie;
+
 function custom_varDump($data)
 {
     echo "<pre>";

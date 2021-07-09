@@ -14,16 +14,20 @@ use mysql_xdevapi\Exception;
 class ProductController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Generate Fake Data
      *
+     * @param $counter - {HOME_URL}/product/fake/10
      * @return \Illuminate\Http\Response
      */
-
-
     public function factory($counter){
         Product::runFactory($counter);
     }
 
+    /**
+     * Display product main page
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $posts = [
@@ -40,12 +44,13 @@ class ProductController extends Controller
         return view('Product.main' )->with(['posts' => $posts]);
     }
 
+
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function view_all(){
+    public function viewAll(){
 
         try{
 

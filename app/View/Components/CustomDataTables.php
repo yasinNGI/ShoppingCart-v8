@@ -13,14 +13,14 @@ class CustomDataTables extends Component
      */
     public $cols;
     public $products;
-    public $other_data;
+    public $cart;
     public $page;
 
-    public function __construct( $cols = [] , $products = [] , $other_data = [] , $page )
+    public function __construct( $cols = [] , $products = [] , $cart = [], $page )
     {
         $this->cols = $cols;
         $this->products = $products;
-        $this->other_data = $other_data;
+        $this->cart = $cart;
         $this->page = $page;
     }
 

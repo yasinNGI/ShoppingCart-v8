@@ -7,12 +7,25 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
+
+    /**
+     * Display product main page
+     *
+     * @return \Illuminate\Http\Response
+     */
+
     public function index()
     {
         return view('Categories.main');
     }
 
-    public function view_all(){
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function viewAll(){
 
         try{
             $categories = Category::getAll();

@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CartNotification;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Sentry\Response;
 
 class CartController extends Controller
@@ -39,26 +42,21 @@ class CartController extends Controller
      */
     public function store(Request $request, $id){
 
-        try{
-            $res = Cart::addItem($request ,$id);
-            $res->throwResponse();
-            die;
-        }catch (\Exception $ex){
-            return response()->json([
-                'success' => 'false',
-                'errors'  => $ex->getMessage(),
-            ], 400);
-        }
-
-    }
-
-    public function remove(Request $request,$id){
-        $res = Cart::removeIteml($request,$id);
+        $res = Cart::addItem($request ,$id);
+        //Mail::to( Config::get("constant.ADMIN_EMAIL") )->send(new CartNotification($res));
         $res->throwResponse();
     }
 
+    public function remove(Request $request,$id){
 
-    public function cart_items(){
+        $res = Cart::removeItem($request,$id);
+        $res->throwResponse();
+
+
+    }
+
+
+    public function cartItems(){
 
        try{
            $get_cookie_date = Cookie::get('cart');
@@ -70,8 +68,8 @@ class CartController extends Controller
            }
            return view('Cart.all')->with(['products' => $products , 'data' => $data]);
 
-       }catch (\Exception $ex){
-            custom_varDumpDie($ex->getMessage());
+       } catch (\Exception $ex){
+            //custom_varDumpDie($ex->getMessage());
        }
     }
 

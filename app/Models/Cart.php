@@ -17,21 +17,10 @@ class Cart extends Model
 
     public static function addItem($request, $id)
     {
-
         if (!empty($request->status) && !empty($id)) {
             $qty    = !empty($request->quantity) ? $request->quantity : 1;
             $count  = '';
 
-            //DB - Approach =========================================================
-            //$cart = new Cart();
-            //$cart->product_id = $id;
-            //$cart->quantity = $qty;
-            //$cart->price = ($request->price * $qty);
-            //$cart->save();
-            //$count = count(Cart::all());
-
-
-            //Cookies - Approach =========================================================
             $get_cookie_cart_data = Cookie::get('cart');
             $time                 = time() + (86400 * 30);
 
@@ -47,10 +36,12 @@ class Cart extends Model
                 array_push( $arr , $items );
                 $count = count($arr);
                 Cookie::queue('cart',  json_encode($arr) , $time);
+                Options::add_option('cart',$count);
             }else{
                 array_push($cartItems , $items);
                 $count = count($cartItems);
                 Cookie::queue('cart',  json_encode($cartItems) , $time);
+                Options::add_option('cart',$count);
             }
 
             return response()->json(['ok' => 'Product added in cart successfully ', 'count' => $count], 200);
@@ -60,20 +51,17 @@ class Cart extends Model
         }
     }
 
+
     public static function removeItem($request, $id)
     {
         if (!empty($request->status) && $request->status == "remove" && !empty($id)) {
 
             $count = '';
-            //DB - Approach =========================================================
-            //DB::table('carts')->where(['product_id' => $id])->delete();
-            //$count = count(Cart::all());
 
-            //Cookies - Approach =========================================================
             $get_cookie_cart_data = Cookie::get('cart');
             $time                 = time() + (86400 * 30);
 
-            if(isset($get_cookie_cart_data)){
+            if (isset($get_cookie_cart_data)) {
                 $arr = json_decode($get_cookie_cart_data);
 
                 foreach ($arr as $key => $val){
@@ -84,24 +72,21 @@ class Cart extends Model
                 $arr   = array_values($arr);
                 $count = count($arr);
                 Cookie::queue('cart',  json_encode($arr) , $time);
+                Options::add_option('cart',count($arr));
             }
 
-            if( $request->form == "non_ajax" ){
-                return redirect()->back()->with(toastr("Product removed from cart successfully!" , "success"));
-            }else{
+            if ( $request->ajax() ) {
                 return response()->json(['ok' => 'Product removed from cart successfully!', 'count' => $count], 200);
+            } else {
+                return redirect()->back()->with(toastr("Product removed from cart successfully!" , "success"));
             }
 
         } else {
-
-            if( $request->form == "non_ajax" ){
-                return redirect()->back()->with(toastr("Oops! Something went wrong!" , "error"));
+            if( !$request->ajax() ){
+                return response()->json(["message" => "Oops! Something went wrong!"], 422);
             }else{
-                return response()->json(["message" => "Oops! Something went wrong!"], 400);
+                return redirect()->back()->with(toastr("Oops! Something went wrong!" , "error"));
             }
-
         }
-
     }
-
 }
