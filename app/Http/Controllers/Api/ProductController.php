@@ -19,6 +19,37 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
 
+    /**
+     * @OA\Get(
+     *      path="/product/fake",
+     *      operationId="addFakeProducts",
+     *      tags={"Products"},
+     *      summary="Enter fake products through faker",
+     *      description="Fake Products",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
+    public function factory(Request $request)
+    {
+        if (empty($request->get('counter')))
+            return response()->json(['flag' => 'failed', 'message' => 'Please set counter for fake data.'], 403);
+
+        Product::runFactory($request->get('counter'));
+        return response()->json(['flag' => 'success', 'message' => 'Fake data has been added.'], 200);
+    }
+
+
 
     /**
      * @OA\Get(
