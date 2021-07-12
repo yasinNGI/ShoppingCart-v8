@@ -56,14 +56,7 @@ return [
              * Middleware allows to prevent unexpected access to API documentation
             */
             'middleware' => [
-                'api' => [
-                    /*
-                       |--------------------------------------------------------------------------
-                       | Edit to set the api's title
-                       |--------------------------------------------------------------------------
-                    */
-                    'title' => 'Integration Swagger in Laravel',
-                ],
+                'api' => [],
                 'asset' => [],
                 'docs' => [],
                 'oauth2_callback' => [],

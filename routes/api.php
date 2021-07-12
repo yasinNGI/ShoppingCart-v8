@@ -15,16 +15,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/register'  ,[App\Http\Controllers\Auth\UserAuthController::class , 'register']);
+Route::post('/login'     ,[App\Http\Controllers\Auth\UserAuthController::class , 'login']);
+Route::get('/logout'     ,[App\Http\Controllers\Auth\UserAuthController::class , 'logout'])->middleware('auth:api');;
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 
-//Products
-Route::get('/product/test'                  , [App\Http\Controllers\Api\ProductController::class , 'test']);
-Route::get('/product/fake'                  , [App\Http\Controllers\Api\ProductController::class , 'factory']);
-Route::get('/product/all'                   , [App\Http\Controllers\Api\ProductController::class , 'viewAll']);
 
+//Products
+Route::prefix('product')->middleware('auth:api')->group(function () {
+    Route::get('/test'                  , [App\Http\Controllers\Api\V1\ProductController::class , 'test']);
+    Route::get('/fake'                  , [App\Http\Controllers\Api\V1\ProductController::class , 'factory']);
+    Route::get('/all'                   , [App\Http\Controllers\Api\V1\ProductController::class , 'viewAll']);
+});
 
 
 

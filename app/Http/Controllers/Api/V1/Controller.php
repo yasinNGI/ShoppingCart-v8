@@ -5,7 +5,7 @@ class Controller
     /**
      * @OA\Info(
      *      version="1.0.0",
-     *      title="Laravel OpenApi Demo Documentation",
+     *      title="Shopping Cart Documentation",
      *      description="L5 Swagger OpenApi description",
      *      @OA\Contact(
      *          email="admin@admin.com"
@@ -21,10 +21,5 @@ class Controller
      *      description="Demo API Server"
      * )
 
-     *
-     * @OA\Tag(
-     *     name="Projects",
-     *     description="API Endpoints of Projects"
-     * )
      */
 }

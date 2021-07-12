@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Laravel OpenApi Demo Documentation",
+        "title": "Shopping Cart Documentation",
         "description": "L5 Swagger OpenApi description",
         "contact": {
             "email": "admin@admin.com"
@@ -19,6 +19,27 @@
         }
     ],
     "paths": {
+        "/product/fake": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Enter fake products through faker",
+                "description": "Fake Products",
+                "operationId": "addFakeProducts",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
         "/product/all": {
             "get": {
                 "tags": [
@@ -41,12 +62,6 @@
             }
         }
     },
-    "tags": [
-        {
-            "name": "Projects",
-            "description": "API Endpoints of Projects"
-        }
-    ],
     "security": [
         []
     ]
