@@ -16,4 +16,3 @@ Route::prefix('product')->group(function () {
     Route::get('/truncate'                  ,[ProductController::class, 'truncate'])->name('product_truncate');
 });
 
-

@@ -12,6 +12,55 @@ class UserAuthController extends Controller
 {
     use HasApiTokens;
 
+    /**
+     * @OA\Post(
+     *      path="/register",
+     *      operationId="register",
+     *      tags={"User Authentication"},
+     *      summary="user registration api",
+     *      description="Returns authentication token after successfull registration.",
+     *
+     *     @OA\Parameter(
+     *      name="name",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *          )
+     *      ),
+     *
+     *      @OA\Parameter(
+     *      name="email",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *          )
+     *      ),
+     *
+     *     @OA\Parameter(
+     *      name="password",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *          )
+     *      ),
+     *
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -29,6 +78,47 @@ class UserAuthController extends Controller
         return response([ 'user' => $user, 'token' => $token]);
     }
 
+
+    /**
+     * @OA\Post(
+     *      path="/login",
+     *      operationId="login",
+     *      tags={"User Authentication"},
+     *      summary="user login api",
+     *      description="Returns authentication token after successfull login.",
+     *
+     *      @OA\Parameter(
+     *      name="email",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *          )
+     *      ),
+     *
+     *     @OA\Parameter(
+     *      name="password",
+     *      in="query",
+     *      required=true,
+     *      @OA\Schema(
+     *           type="string"
+     *          )
+     *      ),
+     *
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
     public function login(Request $request)
     {
         $data = $request->validate([
@@ -47,6 +137,28 @@ class UserAuthController extends Controller
 
     }
 
+
+    /**
+     * @OA\Get(
+     *      path="/logout",
+     *      operationId="logout",
+     *      tags={"User Authentication"},
+     *      summary="user logout api",
+     *      description="Returns token session expire after logout",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
     public function logout(Request $res)
     {
         if (Auth::user()) {

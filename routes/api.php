@@ -27,9 +27,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //Products
 Route::prefix('product')->middleware('auth:api')->group(function () {
-    Route::get('/test'                  , [App\Http\Controllers\Api\V1\ProductController::class , 'test']);
-    Route::get('/fake'                  , [App\Http\Controllers\Api\V1\ProductController::class , 'factory']);
-    Route::get('/all'                   , [App\Http\Controllers\Api\V1\ProductController::class , 'viewAll']);
+    Route::get('/test'                      ,[App\Http\Controllers\Api\V1\ProductController::class   , 'test']);
+    Route::get('/fake'                      ,[App\Http\Controllers\Api\V1\ProductController::class   , 'factory']);
+    Route::get('/all'                       ,[App\Http\Controllers\Api\V1\ProductController::class   , 'viewAll']);
+    Route::get('/delete-records/{limit}'    ,[App\Http\Controllers\Api\V1\ProductController::class   , 'destroyRecords']);
+    Route::get('/truncate'                  ,[App\Http\Controllers\Api\V1\ProductController::class   , 'truncate']);
+    Route::post('/store'                    ,[App\Http\Controllers\Api\V1\ProductController::class   , 'store']);
+    Route::post('/update/{id}'              ,[App\Http\Controllers\Api\V1\ProductController::class   , 'update']);
+    Route::delete('/delete/{id}'            ,[App\Http\Controllers\Api\V1\ProductController::class   , 'destroy']);
+
 });
 
 
