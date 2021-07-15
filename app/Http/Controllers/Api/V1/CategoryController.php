@@ -278,9 +278,12 @@ class CategoryController extends Controller
      *          description="Forbidden"
      *      )
      *     )
+     *
      */
     public function destroy($id)
     {
+
+
         try{
             Category::deleteCategory($id);
             return response()->json(['flag' => 'success' , 'message' => 'Category deleted successfully!'],200);
