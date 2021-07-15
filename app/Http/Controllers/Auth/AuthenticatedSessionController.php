@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Events\LogoutHistory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\UserActivities;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
+use Illuminate\Auth\Events\Logout;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,8 +45,28 @@ class AuthenticatedSessionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
      */
+
+    public function UserAuth(){
+        $user_info         = Auth::user();
+
+        $current_timestamp = Carbon::now()->toDateTimeString();
+        $activity          = UserActivities::where(['user_id' => $user_info->id])->latest()->first();
+
+        if(isset($activity)){
+            $loginTime         = Carbon::parse($activity->login_time);
+            $logoutTime        = Carbon::parse($current_timestamp);
+
+            $total_hour        = $logoutTime->diffForHumans($loginTime);
+
+            UserActivities::where(['id' => $activity->id ])->update([ 'logout_time' => $current_timestamp , 'total_hour' => $total_hour]);
+        }
+
+    }
+
+
     public function destroy(Request $request)
     {
+        $this->UserAuth();
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
