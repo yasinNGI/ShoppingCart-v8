@@ -422,4 +422,41 @@ class ProductController extends Controller
 
         return response()->json(['flag' => 'success', 'message' =>  " Random ".$limit." records has been deleted."], 200);
     }
+
+
+
+    /**
+     * Truncate product table.
+     * Usage route -> product/truncate
+     *
+     * @return \Illuminate\Http\Response
+     */
+    /**
+     * @OA\Get(
+     *      path="/product/truncate",
+     *      operationId="truncateProduct",
+     *      tags={"Product Api's"},
+     *      summary="Truncate Product 'Reset product table' ",
+     *      description="Truncate Product 'Reset product table'.",
+     *
+     *
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     *     )
+     */
+    public function truncate(){
+        Product::truncateProductsTable();
+        return response()->json(['flag' => 'success', 'message' =>  "Table reset successfully!"], 200);
+    }
+
 }
