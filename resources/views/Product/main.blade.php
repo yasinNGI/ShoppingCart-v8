@@ -15,7 +15,8 @@
             </div>
         </div>
 
-        <x-main-page-buttons btnTextOne="Add Product" btnUrlOne="{{route('product_add')}}" btnTextTwo="View All" btnUrlTwo="{{route('product_all')}}"  />
+        <x-main-page-buttons btnTextOne="Add Product" btnUrlOne="{{route('product_add')}}" btnTextTwo="View All" btnUrlTwo="{{route('product_all')}}" >
+        </x-main-page-buttons>
         {{-- <x-alert message="Hello" type="primary" :alert="$posts" />--}}
     </div>
 @endsection

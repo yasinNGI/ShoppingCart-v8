@@ -10,7 +10,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
-                <h1 style="font-size: 30px;">Category Section</h1>
+                <h1  class="my-3" style="font-size: 30px;">Category Section</h1>
             </div>
         </div>
 

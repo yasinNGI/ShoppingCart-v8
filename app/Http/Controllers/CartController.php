@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CartNotification;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Sentry\Response;
 
 class CartController extends Controller
 {
@@ -37,27 +41,36 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $id){
+
         $res = Cart::addItem($request ,$id);
+        //Mail::to( Config::get("constant.ADMIN_EMAIL") )->send(new CartNotification($res));
         $res->throwResponse();
     }
 
     public function remove(Request $request,$id){
+
         $res = Cart::removeItem($request,$id);
         $res->throwResponse();
+
+
     }
 
 
-    public function cart_items(){
+    public function cartItems(){
 
-        $get_cookie_date = Cookie::get('cart');
-        $data            = json_decode($get_cookie_date);
-        $products        = [];
+       try{
+           $get_cookie_date = Cookie::get('cart');
+           $data            = json_decode($get_cookie_date);
+           $products        = [];
 
-        foreach ($data as $key => $val ){
-            $products [] = Product::find( $val->product_id );
-        }
+           foreach ($data as $key => $val ){
+               $products [] = Product::find( $val->product_id );
+           }
+           return view('Cart.all')->with(['products' => $products , 'data' => $data]);
 
-        return view('Cart.all')->with(['products' => $products , 'data' => $data]);
+       } catch (\Exception $ex){
+            //custom_varDumpDie($ex->getMessage());
+       }
     }
 
     /**

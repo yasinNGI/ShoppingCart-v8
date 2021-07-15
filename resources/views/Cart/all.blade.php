@@ -32,6 +32,10 @@
 
         @include('Product.Product-Components.header_with_buttons')
 
+        @if (session('exception_error'))
+            <div class="alert alert-danger my-5">{{ session('exception_error') }}</div>
+        @endif
+
 
         <div class="row my-5">
 

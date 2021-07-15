@@ -17,22 +17,33 @@
 
         <x-main-page-buttons btnTextOne="Add Product" btnUrlOne="{{route('product_add')}}" btnTextTwo="View All" btnUrlTwo="{{route('product_all')}}"  />
 
+        @if (session('exception_error'))
+            <div class="alert alert-danger my-5">{{ session('exception_error') }}</div>
+        @endif
+
         <div class="row mt-5">
 
             <div class="col-md-6">
                 <form action="{{route('product_store')}}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <label for="">Product Name:</label>
+                        <label for="">Name:</label>
                         <input type="text" name="product_title" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('product_title') is-invalid @enderror">
-
                         @error('product_title')
                             <span class="invalid-feedback d-block" role="alert">
                                <strong>{{ $message }}</strong>
                             </span>
                         @enderror
+                    </div>
 
-
+                    <div class="form-group">
+                        <label for="">Price:</label>
+                        <input type="text" name="product_price" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('product_price') is-invalid @enderror">
+                        @error('product_price')
+                            <span class="invalid-feedback d-block" role="alert">
+                               <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
 
                     <div class="form-group">
@@ -42,7 +53,7 @@
 
 
                     <div class="form-group">
-                        <label for="exampleFormControlFile1">Product Image</label>
+                        <label for="exampleFormControlFile1">Upload Image:</label>
                         <input type="file" class="form-control-file" name="product_image" id="exampleFormControlFile1">
                     </div>
 
