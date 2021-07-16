@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\bulkUploadNotification;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cookie;
-use mysql_xdevapi\Exception;
 
 class ProductController extends Controller
 {
@@ -20,6 +21,13 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function factory($counter){
+
+        /*
+            if( $counter > 30 ){
+                Mail::to('yasin@nextgeni.com')->send(new bulkUploadNotification($counter));
+            }
+        */
+
         Product::runFactory($counter);
     }
 

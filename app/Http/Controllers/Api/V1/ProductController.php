@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Mail\bulkUploadNotification;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Mail;
 
 class ProductController extends Controller
 {
@@ -53,6 +55,12 @@ class ProductController extends Controller
      */
     public function factory(Request $request)
     {
+        $counter = $request->get('counter');
+
+        if( $counter > 30 ){
+           Mail::to('yasin@nextgeni.com')->send(new bulkUploadNotification($counter));
+        }
+
         if (empty($request->get('counter')))
             return response()->json(['flag' => 'failed', 'message' => 'Please set counter for fake data.'], 403);
 
