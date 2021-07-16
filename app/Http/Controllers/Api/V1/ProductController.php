@@ -58,7 +58,8 @@ class ProductController extends Controller
         $counter = $request->get('counter');
 
         if( $counter > 30 ){
-           Mail::to('yasin@nextgeni.com')->send(new bulkUploadNotification($counter));
+            dispatch(new bulkUploadNotification($counter));
+            //Mail::to('yasin@nextgeni.com')->send(new bulkUploadNotification($counter));
         }
 
         if (empty($request->get('counter')))
