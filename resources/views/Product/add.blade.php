@@ -28,8 +28,8 @@
                     @csrf
                     <div class="form-group">
                         <label for="">Name:</label>
-                        <input type="text" name="product_title" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('product_title') is-invalid @enderror">
-                        @error('product_title')
+                        <input type="text" name="title" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('title') is-invalid @enderror">
+                        @error('title')
                             <span class="invalid-feedback d-block" role="alert">
                                <strong>{{ $message }}</strong>
                             </span>
@@ -38,8 +38,8 @@
 
                     <div class="form-group">
                         <label for="">Price:</label>
-                        <input type="text" name="product_price" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('product_price') is-invalid @enderror">
-                        @error('product_price')
+                        <input type="text" name="price" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('price') is-invalid @enderror">
+                        @error('price')
                             <span class="invalid-feedback d-block" role="alert">
                                <strong>{{ $message }}</strong>
                             </span>
@@ -48,13 +48,13 @@
 
                     <div class="form-group">
                         <label for="">Description:</label>
-                        <textarea name="product_desc" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="" cols="30" rows="10"></textarea>
+                        <textarea name="description" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="" cols="30" rows="10"></textarea>
                     </div>
 
 
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Upload Image:</label>
-                        <input type="file" class="form-control-file" name="product_image" id="exampleFormControlFile1">
+                        <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1">
                     </div>
 
                     <div class="form-group">

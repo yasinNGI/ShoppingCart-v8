@@ -29,9 +29,9 @@
                     @csrf
                     <div class="form-group">
                         <label for="">Name:</label>
-                        <input type="text" name="product_title" value="{{$product->title}}" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('product_title') is-invalid @enderror">
+                        <input type="text" name="title" value="{{$product->title}}" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('title') is-invalid @enderror">
 
-                        @error('product_title')
+                        @error('title')
                         <span class="invalid-feedback d-block" role="alert">
                                <strong>{{ $message }}</strong>
                             </span>
@@ -40,8 +40,8 @@
 
                     <div class="form-group">
                         <label for="">Price:</label>
-                        <input type="text" name="product_price" value="{{$product->price}}" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('product_price') is-invalid @enderror">
-                        @error('product_price')
+                        <input type="text" name="price" value="{{$product->price}}" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full @error('price') is-invalid @enderror">
+                        @error('price')
                         <span class="invalid-feedback d-block" role="alert">
                                <strong>{{ $message }}</strong>
                             </span>
@@ -50,7 +50,7 @@
 
                     <div class="form-group">
                         <label for="">Description:</label>
-                        <textarea name="product_desc" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="" cols="30" rows="10">{{$product->description}}</textarea>
+                        <textarea name="description" class="rounded-md shadow-sm border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 block mt-1 w-full" id="" cols="30" rows="10">{{$product->description}}</textarea>
                     </div>
 
                     <div class="form-group">
@@ -61,9 +61,9 @@
                             @else
                                 <img src="{{asset('storage/'.$product->image)}}" width="200" height="150" alt="">
                             @endif
-                            <input type="hidden" name="product_old_image" value="{{$product->image}}">
+                            <input type="hidden" name="old_image" value="{{$product->image}}">
                         </span>
-                        <input type="file" class="form-control-file" name="product_image" id="exampleFormControlFile1">
+                        <input type="file" class="form-control-file" name="image" id="exampleFormControlFile1">
                     </div>
 
                     <div class="form-group">

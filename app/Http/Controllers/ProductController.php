@@ -41,9 +41,23 @@ class ProductController extends Controller
             ]
         ];
 
-        return view('Product.main' )->with(['posts' => $posts]);
+        $btns = [
+            ['url' => route('product_add') , 'text' => 'Add Product'],
+            ['url' => route('product_all') , 'text' => 'View All'],
+            ['url' => route('product_livewire') , 'text' => 'Product Livewire'],
+        ];
+
+        return view('Product.main' )->with(['posts' => $posts , 'buttons' => $btns]);
     }
 
+    /**
+     * Display product livewire main page
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function livewire(){
+        return view('product.livewire');
+    }
 
     /**
      * Display a listing of the resource.
@@ -100,13 +114,13 @@ class ProductController extends Controller
         try{
 
             $custom_msg = [
-                'product_title.required' => 'Product Name is Required!',
-                'product_price.required' => 'Product Price is Required!'
+                'title.required' => 'Product Name is Required!',
+                'price.required' => 'Product Price is Required!'
             ];
 
             $this->validate($request,[
-                'product_title' => 'required',
-                'product_price' => 'required'
+                'title' => 'required',
+                'price' => 'required'
             ] , $custom_msg);
 
             Product::storeProduct($request);
@@ -155,13 +169,13 @@ class ProductController extends Controller
         try{
 
             $custom_msg = [
-                'product_title.required' => 'Product Name is Required!',
-                'product_price.required' => 'Product Price is Required!'
+                'title.required' => 'Product Name is Required!',
+                'price.required' => 'Product Price is Required!'
             ];
 
             $this->validate($request,[
-                'product_title' => 'required',
-                'product_price' => 'required|numeric'
+                'title' => 'required',
+                'price' => 'required|numeric'
             ] , $custom_msg);
 
             $err = Product::updateProduct($request, $id);
