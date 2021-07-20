@@ -54,7 +54,7 @@ return [
     |
     */
 
-    'asset_url' => 'https://localhost/projects/ShoppingCart-v8/public',
+    'asset_url' => null,
 
     /*
     |--------------------------------------------------------------------------

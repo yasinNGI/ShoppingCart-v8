@@ -24,7 +24,6 @@
 
 </div>
 
-
 @include('my_layout.scripts')
 
 <script>
