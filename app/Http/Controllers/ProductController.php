@@ -56,7 +56,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function livewire(){
-        return view('product.livewire');
+        return view('Product.livewire');
     }
 
     /**
