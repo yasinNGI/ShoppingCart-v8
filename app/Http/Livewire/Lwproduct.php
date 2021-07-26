@@ -57,15 +57,19 @@ class Lwproduct extends Component
         ] , $custom_msg);
 
         try{
-            $product = Product::create([
-                'title'       =>  $this->title,
-                'slug'        =>  str_replace( ' ' , '-' , strtolower( $this->title ) ),
-                'description' =>  $this->description,
-                'price'       =>  $this->price,
-                'status'      =>  1,
-            ]);
+//            $product = Product::create([
+//                'title'       =>  $this->title,
+//                'slug'        =>  str_replace( ' ' , '-' , strtolower( $this->title ) ),
+//                'description' =>  $this->description,
+//                'price'       =>  $this->price,
+//                'status'      =>  1,
+//            ]);
+//
+//            $slug_ = str_replace( ' ' , '-' , strtolower( $this->title ) );
 
-            $slug_ = str_replace( ' ' , '-' , strtolower( $this->title ) );
+
+            custom_varDumpDie($this->image->file('image'));
+
 
 //            if( $this->image->hasFile('image') ){
 //
@@ -143,7 +147,7 @@ class Lwproduct extends Component
 
     public function render()
     {
-        $products      = Product::paginate(10);
+        $products      = Product::orderBy('id','desc')->paginate(10);
         return view('livewire.lwproduct' , ['products' => $products]);
     }
 }
