@@ -3,6 +3,9 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 {{--<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>--}}
 
+@livewireScripts
+
+
 <!-- Bootstrap 4 -->
 {{--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>--}}
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" ></script>
@@ -15,8 +18,8 @@
 <!-- Toastr -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
-<script>
 
+<script>
     $.ajaxSetup({
         headers:{
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -35,4 +38,5 @@
             "autoWidth": false,
         });
     });
+
 </script>

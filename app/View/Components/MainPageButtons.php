@@ -15,14 +15,21 @@ class MainPageButtons extends Component
     public $btnTextTwo;
     public $btnUrlOne;
     public $btnUrlTwo;
+    public $btnArr;
 
-    public function __construct( $btnTextOne , $btnTextTwo ,$btnUrlOne ,$btnUrlTwo )
+    public function __construct( $btnArr = [] )
     {
-        $this->btnTextOne = $btnTextOne;
-        $this->btnTextTwo = $btnTextTwo;
-        $this->btnUrlOne = $btnUrlOne;
-        $this->btnUrlTwo = $btnUrlTwo;
+        $this->btnArr = $btnArr;
+
     }
+
+//    public function __construct( $btnTextOne , $btnTextTwo ,$btnUrlOne ,$btnUrlTwo )
+//    {
+//        $this->btnTextOne = $btnTextOne;
+//        $this->btnTextTwo = $btnTextTwo;
+//        $this->btnUrlOne = $btnUrlOne;
+//        $this->btnUrlTwo = $btnUrlTwo;
+//    }
 
     /**
      * Get the view / contents that represent the component.
@@ -31,6 +38,6 @@ class MainPageButtons extends Component
      */
     public function render()
     {
-        return view('components.main-page-buttons');
+        return view('components.main-page-buttons')->with(['buttons' => $this->btnArr]);
     }
 }

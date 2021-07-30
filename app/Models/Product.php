@@ -22,21 +22,21 @@ class Product extends Model
     public static function storeProduct($request){
 
         $product = self::create([
-            'title'       =>  $request->product_title,
-            'slug'        =>  str_replace( ' ' , '-' , strtolower( $request->product_title ) ),
-            'description' =>  $request->product_desc,
-            'price'       =>  $request->product_price,
+            'title'       =>  $request->title,
+            'slug'        =>  str_replace( ' ' , '-' , strtolower( $request->title ) ),
+            'description' =>  $request->description,
+            'price'       =>  $request->price,
             'status'      =>  1,
         ]);
 
-        if( $request->hasFile('product_image') ){
+        if( $request->hasFile('image') ){
 
             $folder_name         = 'products';
             $folder_product_slug = $product->slug.'_'.$product->id;
             $directory           = 'public/upload/'.$folder_name.'/'.$folder_product_slug.'/';
             Storage::makeDirectory($directory);
 
-            $image_path = $request->file('product_image')->store('upload/'.$folder_name.'/'.$folder_product_slug , 'public');
+            $image_path = $request->file('image')->store('upload/'.$folder_name.'/'.$folder_product_slug , 'public');
             storage_path('app/public/upload/'.$folder_name.'/'.$folder_product_slug.'/').$image_path;
 
             self::where(['id' => $product->id])->update([
@@ -49,16 +49,16 @@ class Product extends Model
 
     public static function updateProduct($request , $id){
 
-        $product_pre_img     = $request->product_old_image;
+        $product_pre_img     = $request->old_image;
         $folder_name         = 'products';
-        $folder_product_slug = str_replace( ' ' , '-' , strtolower( $request->product_title ) );
+        $folder_product_slug = str_replace( ' ' , '-' , strtolower( $request->title ) );
 
         self::where(['id' => $id])->update([
-            'title'       => $request->product_title,
-            'slug'        => str_replace( ' ' , '-' , strtolower( $request->product_title ) ),
-            'description' => $request->product_desc,
-            'price'       => $request->product_price,
-            'image'       => $request->file('product_image') ?  $request->file('product_image')->store('upload/'.$folder_name.'/'.$folder_product_slug , 'public') : $product_pre_img,
+            'title'       => $request->title,
+            'slug'        => str_replace( ' ' , '-' , strtolower( $request->title ) ),
+            'description' => $request->description,
+            'price'       => $request->price,
+            'image'       => $request->file('image') ?  $request->file('image')->store('upload/'.$folder_name.'/'.$folder_product_slug , 'public') : $product_pre_img,
         ]);
 
     }

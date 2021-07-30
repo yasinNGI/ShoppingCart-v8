@@ -1,10 +1,13 @@
 <?php
 
+use App\Http\Livewire\Lwproduct;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 
 Route::prefix('product')->group(function () {
+//    Route::post('/'                         ,App\Http\Livewire\Lwproduct::class);
     Route::get('/'                          ,[ProductController::class, 'index'])->name('main_product_page');
+    Route::get('/livewire/page'             ,[ProductController::class, 'livewire'])->name('product_livewire');
     Route::get('/all'                       ,[ProductController::class, 'viewAll'])->name('product_all');
     Route::get('/add'                       ,[ProductController::class, 'create'])->name('product_add');
     Route::post('/store'                    ,[ProductController::class, 'store'])->name('product_store');
